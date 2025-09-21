@@ -1,4 +1,4 @@
-# 🧬 Biology Data Visualization with Seaborn  
+#  Biology Data Visualization with Seaborn  
 
 This repository is a **beginner-friendly tutorial** for learning Seaborn using **biology-inspired datasets**.  
 It is designed for biology and bioinformatics students who want to **practice data visualization** step by step.  
@@ -11,35 +11,10 @@ Data visualization is essential in **biology and bioinformatics**.
 Whether you are analyzing cytokine levels, docking results, gene expression, or microbiome abundance, good plots reveal patterns that numbers alone cannot.  
 
 This repository provides:  
-- 📊 **Datasets** (CSV files) with realistic biology examples  
-- 🖼️ **Seaborn code templates** for each plot type  
-- 📘 **Explanations** of when and why to use each visualization  
-- 🧑‍🔬 A **beginner roadmap** for step-by-step practice  
-
----
-
-## 📦 Repository Structure  
-
-The repository is structured as follows:
-biology-data-viz-seaborn/
-├── data/ # Example datasets
-│ ├── docking_scores.csv
-│ ├── timecourse_cytokines.csv
-│ ├── variants.csv
-│ ├── gene_expression.csv
-│ ├── enzyme_kinetics.csv
-│ ├── metabolites.csv
-│ ├── microbiome_abundance.csv
-│ ├── qc_metrics.csv
-│ ├── phylo_traits.csv
-│ └── pathway_status_table.csv
-│
-├── figs/ # Save your generated plots here
-├── src/ # Example scripts
-│ └── seaborn_templates.py
-├── notebooks/ # Optional Jupyter notebooks
-├── README.md # Tutorial guide
-└── requirements.txt # Package dependencies
+-  **Datasets** (CSV files) with realistic biology examples  
+-  **Seaborn code templates** for each plot type  
+-  **Explanations** of when and why to use each visualization  
+-  A **beginner roadmap** for step-by-step practice  
 
 
 ---
@@ -49,28 +24,22 @@ biology-data-viz-seaborn/
 1. Clone this repo:
    ```bash
    git clone https://github.com/yourusername/biology-data-viz-seaborn.git
+   
    cd biology-data-viz-seaborn
 
-Install requirements:
-   ```bash
-   pip install -r requirements.txt
-   ```Run the template script:
-   python src/seaborn_templates.py
-Plots will open one by one
-To save a figure instead of showing it
-plt.savefig("figs/plot.png", dpi=300, bbox_inches="tight")
 
-📊 Plot Types and Biology Examples
-1️⃣ Scatterplot
+1. Scatter Plot
 
-Definition: Shows relationship between two variables.
+Definition: A scatter plot displays relationships between two continuous variables using points.
+When to use: To check correlations, clusters, or group differences.
+Biology example: Plotting gene expression level vs. protein abundance across samples.
 
-Biology Example: Docking results (logP vs Vina score).
 import seaborn as sns, pandas as pd, matplotlib.pyplot as plt
 df = pd.read_csv("data/docking_scores.csv")
 sns.scatterplot(data=df, x="logP", y="vina_score", hue="target", size="ring_count")
 plt.title("Docking Landscape")
 plt.show()
+
 
 2️⃣ Lineplot
 
