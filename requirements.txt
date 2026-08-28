@@ -1,0 +1,15 @@
+# Core
+numpy>=1.26
+pandas>=2.1
+matplotlib>=3.8
+seaborn>=0.13
+scipy>=1.11
+
+# Notebooks
+jupyter>=1.0
+ipykernel>=6.29
+jupytext>=1.16
+nbconvert>=7.16
+
+# Testing
+pytest>=8.0

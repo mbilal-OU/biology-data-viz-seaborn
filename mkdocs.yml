@@ -1,0 +1,17 @@
+site_name: Biology Data Visualization with Seaborn
+site_description: A tested Seaborn tutorial and plotting toolkit built on biologically realistic simulated datasets.
+repo_url: https://github.com/mbilal-OU/biology-data-viz-seaborn
+repo_name: mbilal-OU/biology-data-viz-seaborn
+
+nav:
+  - Home: index.md
+  - Plot Gallery: gallery.md
+
+theme:
+  name: readthedocs
+
+markdown_extensions:
+  - tables
+  - fenced_code
+
+
