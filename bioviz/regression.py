@@ -55,8 +55,14 @@ def enzyme_kinetics_lmplot(df: pd.DataFrame):
     plot_df = df.copy()
     plot_df["log_substrate"] = np.log2(plot_df["substrate_conc"])
     g = sns.lmplot(
-        data=plot_df, x="log_substrate", y="rate", hue="inhibitor",
-        order=2, height=5, aspect=1.2, scatter_kws={"alpha": 0.6},
+        data=plot_df,
+        x="log_substrate",
+        y="rate",
+        hue="inhibitor",
+        order=2,
+        height=5,
+        aspect=1.2,
+        scatter_kws={"alpha": 0.6},
     )
     g.set_axis_labels("log2(substrate concentration)", "Reaction rate")
     g.figure.suptitle("Enzyme Kinetics: Inhibitor Effects", y=1.03, fontweight="bold")

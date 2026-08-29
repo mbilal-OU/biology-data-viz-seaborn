@@ -14,7 +14,7 @@ Example
 >>> fig, ax = relational.docking_scatter(df)
 """
 
-from . import theme  # noqa: F401
+from . import omics, theme  # noqa: F401
 from ._version import __version__  # noqa: F401
 
-__all__ = ["theme", "__version__"]
+__all__ = ["omics", "theme", "__version__"]

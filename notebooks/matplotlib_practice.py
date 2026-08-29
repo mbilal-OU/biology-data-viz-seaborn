@@ -72,7 +72,9 @@ for _, row in low_cov.head(3).iterrows():
     ax.annotate(
         row["sample_id"],
         (row["coverage_mean"], row["duplicates_pct"]),
-        textcoords="offset points", xytext=(5, 5), fontsize=8,
+        textcoords="offset points",
+        xytext=(5, 5),
+        fontsize=8,
     )
 
 ax.axvline(30, color="crimson", linestyle="--", linewidth=1, alpha=0.7)

@@ -23,8 +23,15 @@ def docking_scatter(df: pd.DataFrame, ax: plt.Axes | None = None) -> tuple[plt.F
     """
     fig, ax = (ax.figure, ax) if ax is not None else plt.subplots(figsize=theme.FIGSIZE_DEFAULT)
     sns.scatterplot(
-        data=df, x="logP", y="vina_score", hue="target", size="ring_count",
-        sizes=(30, 180), alpha=0.75, palette=theme.CATEGORICAL_PALETTE, ax=ax,
+        data=df,
+        x="logP",
+        y="vina_score",
+        hue="target",
+        size="ring_count",
+        sizes=(30, 180),
+        alpha=0.75,
+        palette=theme.CATEGORICAL_PALETTE,
+        ax=ax,
     )
     ax.set_title("Docking Landscape: Binding Score vs. Lipophilicity")
     ax.set_xlabel("logP (lipophilicity)")
@@ -43,8 +50,14 @@ def cytokine_timecourse(df: pd.DataFrame, ax: plt.Axes | None = None) -> tuple[p
     """
     fig, ax = (ax.figure, ax) if ax is not None else plt.subplots(figsize=theme.FIGSIZE_DEFAULT)
     sns.lineplot(
-        data=df, x="time_h", y="IL6", hue="treatment",
-        errorbar="sd", marker="o", palette=theme.CATEGORICAL_PALETTE, ax=ax,
+        data=df,
+        x="time_h",
+        y="IL6",
+        hue="treatment",
+        errorbar="sd",
+        marker="o",
+        palette=theme.CATEGORICAL_PALETTE,
+        ax=ax,
     )
     ax.set_title("IL-6 Cytokine Response Following LPS Challenge")
     ax.set_xlabel("Time post-challenge (h)")

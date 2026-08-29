@@ -18,7 +18,7 @@ import pytest
 
 matplotlib.use("Agg")
 
-from bioviz import categorical, distributions, matrix, regression, relational, theme  # noqa: E402
+from bioviz import categorical, distributions, matrix, omics, regression, relational, theme  # noqa: E402
 
 DATA = Path(__file__).resolve().parents[1] / "data"
 
@@ -75,7 +75,23 @@ def pathway_df():
     return pd.read_csv(DATA / "pathway_status_table.csv")
 
 
+@pytest.fixture(scope="module")
+def de_df():
+    return pd.read_csv(DATA / "differential_expression.csv")
+
+
+@pytest.fixture(scope="module")
+def pangenome_df():
+    return pd.read_csv(DATA / "pangenome_presence_absence.csv")
+
+
+@pytest.fixture(scope="module")
+def pangenome_summary_df():
+    return pd.read_csv(DATA / "pangenome_gene_summary.csv")
+
+
 # --- rendering smoke tests -------------------------------------------------
+
 
 def test_docking_scatter_renders(docking_df):
     fig, ax = relational.docking_scatter(docking_df)
@@ -137,7 +153,61 @@ def test_enzyme_lmplot_renders(enzyme_df):
     assert g.figure is not None
 
 
+def test_volcano_plot_renders_and_marks_thresholds(de_df):
+    fig, ax = omics.volcano_plot(de_df)
+    assert ax.has_data()
+    threshold_lines = [line for line in ax.lines if line.get_linestyle() in {"--", ":"}]
+    assert len(threshold_lines) == 3
+
+
+def test_ma_plot_renders(de_df):
+    fig, ax = omics.ma_plot(de_df)
+    assert ax.has_data()
+
+
+def test_pangenome_frequency_spectrum_counts_every_family(pangenome_summary_df):
+    fig, ax = omics.pangenome_frequency_spectrum(pangenome_summary_df)
+    plotted_total = sum(patch.get_height() for patch in ax.patches)
+    assert plotted_total == len(pangenome_summary_df)
+
+
+def test_pangenome_pca_is_finite_and_nonzero(pangenome_df):
+    scores, explained = omics.pangenome_pca(pangenome_df)
+    assert scores[["PC1", "PC2"]].notna().all().all()
+    assert (explained > 0).all()
+    assert explained.sum() <= 1
+
+
+def test_pangenome_pca_plot_renders(pangenome_df):
+    fig, ax, explained = omics.pangenome_pca_plot(pangenome_df)
+    assert ax.has_data()
+    assert len(explained) == 2
+
+
+def test_pangenome_clustermap_renders(pangenome_df):
+    g = omics.pangenome_clustermap(pangenome_df)
+    assert g.data2d.shape[0] == len(pangenome_df)
+
+
+def test_microbiome_clr_rows_are_centered(microbiome_df):
+    g = omics.microbiome_clr_clustermap(microbiome_df)
+    assert g.data2d.mean(axis=1).abs().max() < 1e-10
+
+
+def test_missing_required_column_has_clear_error(de_df):
+    with pytest.raises(ValueError, match="Missing required columns: padj"):
+        omics.volcano_plot(de_df.drop(columns="padj"))
+
+
+def test_pangenome_requires_binary_gene_matrix(pangenome_df):
+    invalid = pangenome_df.copy()
+    invalid.loc[0, "GF_0055"] = 2
+    with pytest.raises(ValueError, match="only 0 and 1"):
+        omics.pangenome_pca(invalid)
+
+
 # --- statistical sanity checks ---------------------------------------------
+
 
 def test_michaelis_menten_fit_recovers_ground_truth(enzyme_df):
     """Fitted Vmax/Km should be within 15% of the simulation ground truth."""
@@ -164,12 +234,12 @@ def test_noncompetitive_inhibitor_lowers_vmax_not_km(enzyme_df):
     assert fit.loc["noncompetitive", "km"] == pytest.approx(fit.loc["none", "km"], rel=0.20)
 
 
-def test_missense_variants_skew_rarer_than_common_benign(variants_df):
-    """Purifying selection: missense median AF should be well below the
-    common/benign class's median AF."""
+def test_disruptive_variants_skew_rarer(variants_df):
+    """Increasingly disruptive consequence classes should be rarer."""
+    synonymous_median = variants_df.loc[variants_df.consequence == "synonymous", "allele_frequency"].median()
     missense_median = variants_df.loc[variants_df.consequence == "missense", "allele_frequency"].median()
-    common_median = variants_df.loc[variants_df.consequence == "common_benign", "allele_frequency"].median()
-    assert missense_median < common_median
+    lof_median = variants_df.loc[variants_df.consequence == "loss_of_function", "allele_frequency"].median()
+    assert lof_median < missense_median < synonymous_median
 
 
 def test_microbiome_abundances_sum_to_one_per_sample(microbiome_df):
@@ -201,5 +271,5 @@ def test_upregulated_and_downregulated_genes_separate(expression_df):
             assert trt_mean > ctrl_mean
         elif direction == "down":
             assert trt_mean < ctrl_mean
-        else:
+        elif direction == "unchanged":
             assert abs(trt_mean - ctrl_mean) < 0.5

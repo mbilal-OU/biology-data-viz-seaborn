@@ -13,8 +13,14 @@ def variant_af_histogram(df: pd.DataFrame, ax: plt.Axes | None = None) -> tuple[
     """Step histogram of variant allele frequency, split by consequence class."""
     fig, ax = (ax.figure, ax) if ax is not None else plt.subplots(figsize=theme.FIGSIZE_DEFAULT)
     sns.histplot(
-        data=df, x="allele_frequency", hue="consequence", element="step",
-        stat="density", common_norm=False, palette=theme.CATEGORICAL_PALETTE, ax=ax,
+        data=df,
+        x="allele_frequency",
+        hue="consequence",
+        element="step",
+        stat="density",
+        common_norm=False,
+        palette=theme.CATEGORICAL_PALETTE,
+        ax=ax,
     )
     ax.set_title("Variant Allele Frequency Spectrum by Consequence")
     ax.set_xlabel("Allele frequency")

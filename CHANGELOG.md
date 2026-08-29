@@ -3,6 +3,24 @@
 All notable changes to this project are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.1.0]: 2026-08-29
+
+### Added
+- Differential-expression volcano and MA plots with adjusted p-values.
+- Pangenome frequency, PCA, and Jaccard-clustered presence-absence views.
+- Zero-replacement, CLR-transformed microbiome clustering.
+- An advanced omics notebook, four new raster and vector gallery figures,
+  scientific-method notes, and a focused documentation site.
+- Three-version Python CI, deterministic-data checks, a 95% coverage gate,
+  package builds, strict documentation, and GitHub Pages deployment.
+
+### Changed
+- The visual theme now uses an accessible Okabe-Ito palette and editable vector
+  text defaults.
+- Pathway tables are described as counts, not enrichment results.
+- Uncertainty bands, phylogenetic trait views, and variant consequences now use
+  scientifically bounded interpretations.
+
 ## [1.0.0]: 2026-08-28
 
 ### Added
