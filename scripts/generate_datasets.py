@@ -420,8 +420,10 @@ def gen_differential_expression(n_genes: int = 1200) -> pd.DataFrame:
             "base_mean": base_mean.round(3),
             "log2_fold_change": observed.round(4),
             "lfc_se": standard_error.round(4),
-            "p_value": p_value,
-            "padj": padj,
+            # Stabilize CSV output across SciPy/Python builds that can differ
+            # at the final floating-point bit in the survival function.
+            "p_value": p_value.round(15),
+            "padj": padj.round(15),
             "truth": truth,
         }
     )
