@@ -14,34 +14,79 @@ calling a plotting function.
 All included datasets are seeded simulations with documented ground truth.
 They support reproducible testing and do not represent experimental evidence.
 
-## Flagship case studies
+## Start here: the visualization learning path
 
-### Differential expression
+This is a **public, tutorial-first portfolio repository**. The README is designed
+to let a learner scan the figures first, understand the analytical question,
+open the matching notebook, and then reuse the tested plotting functions.
 
-![Differential-expression volcano and MA plots](figures/11_differential_expression_dashboard.png)
+| Goal | Best starting point |
+|---|---|
+| Learn the visual grammar from worked examples | Browse the visual tutorial gallery below |
+| Reproduce every figure | Run the notebooks from top to bottom |
+| Reuse tested plotting code | Import the functions in the reusable API section |
+| Understand scientific limitations | Read the scientific guardrails before interpreting a plot |
+| Build a publication figure | Export PNG for review and SVG/PDF for final editing |
 
-The volcano plot combines FDR with an explicit effect-size threshold. The MA
-plot exposes abundance-dependent behavior that a volcano plot can hide. The
-code accepts an analysis-ready results table and does not confuse visualization
-with differential-expression inference.
+### A growing visualization series
 
-### Pangenome population structure
+The two current repositories establish a reusable pattern for a broader public
+learning series:
 
-![Pangenome frequency spectrum and PCA](figures/12_pangenome_structure.png)
+- **Seaborn**: statistical graphics, tidy data, semantic mappings, distributions,
+  uncertainty, and omics exploration.
+- **Matplotlib**: low-level figure engineering, custom geometry, dashboards,
+  animation, phylogenomics, genome tracks, and publication layout.
+- **Future Python and R modules** can follow the same structure for interactive
+  graphics and specialist ecosystems such as Plotly, Altair, ggplot2, ggtree,
+  ComplexHeatmap, and Shiny.
 
-Gene families are classified from measured prevalence, and PCA coordinates and
-variance percentages are calculated directly from the binary presence-absence
-matrix. A companion clustermap uses Jaccard distance, which is appropriate for
-binary gene content.
+Each module should remain independently runnable, visual from the first screen,
+scientifically careful, and strong enough to serve as both a tutorial and a
+portfolio artifact.
 
-### Compositional microbiome data
+## Visual tutorial gallery
 
-![CLR-transformed microbiome clustermap](figures/14_microbiome_clr_clustermap.png)
+These are rendered outputs from the repository, not decorative screenshots.
+Click any figure to open the full-resolution version. The numbered filenames
+match the progression in
+[the beginner notebook](notebooks/seaborn_beginner_guide.ipynb), while the
+advanced omics panels are developed in
+[the case-study notebook](notebooks/omics_case_studies.ipynb).
 
-Relative abundances are zero-replaced, renormalized, and transformed to
-centered-log-ratio coordinates. Clustering then uses Euclidean distance in CLR
-space, equivalent to Aitchison distance, instead of treating percentages as
-unconstrained measurements.
+### Relationships, trends, and uncertainty
+
+| Tutorial example | Tutorial example |
+|---|---|
+| **Docking-score relationship**<br>[![Docking scatter plot](figures/01_docking_scatter.png)](figures/01_docking_scatter.png)<br>Scatter semantics, group encoding, trend estimation, and cautious association language. | **Cytokine time course**<br>[![Cytokine time-course plot](figures/02_cytokine_timecourse.png)](figures/02_cytokine_timecourse.png)<br>Repeated measurements, individual trajectories, summary curves, and explicit variability. |
+| **Enzyme-response regression**<br>[![Enzyme regression facets](figures/05_enzyme_lmplot.png)](figures/05_enzyme_lmplot.png)<br>Faceted regression for comparing conditions without hiding between-group structure. | **Trait association with marginals**<br>[![Joint distribution plot](figures/09_phylo_jointplot.png)](figures/09_phylo_jointplot.png)<br>A joint view of association and marginal distributions, without claiming phylogenetic correction. |
+
+### Distributions and group comparisons
+
+| Tutorial example | Tutorial example |
+|---|---|
+| **Variant-frequency histogram**<br>[![Variant allele-frequency histogram](figures/03_variant_af_histogram.png)](figures/03_variant_af_histogram.png)<br>Binning choices and distribution shape for bounded biological measurements. | **Variant-frequency ECDF**<br>[![Variant allele-frequency ECDF](figures/03b_variant_af_ecdf.png)](figures/03b_variant_af_ecdf.png)<br>A bin-free companion view that makes thresholds and tail probabilities easy to read. |
+| **Expression box plot**<br>[![Gene-expression box plot](figures/04_expression_boxplot.png)](figures/04_expression_boxplot.png)<br>Robust group summaries with medians, quartiles, and outlier visibility. | **Expression violin and swarm**<br>[![Gene-expression violin and swarm plot](figures/04b_expression_violin_swarm.png)](figures/04b_expression_violin_swarm.png)<br>Distribution shape plus the observed samples, avoiding a summary-only story. |
+
+### Multivariable structure and matrices
+
+| Tutorial example | Tutorial example |
+|---|---|
+| **Metabolite heatmap**<br>[![Metabolite heatmap](figures/06_metabolite_heatmap.png)](figures/06_metabolite_heatmap.png)<br>Matrix encoding, centered color scales, annotation, and readable feature comparison. | **Microbiome clustermap**<br>[![Microbiome clustermap](figures/07_microbiome_clustermap.png)](figures/07_microbiome_clustermap.png)<br>Exploratory hierarchical structure and the motivation for composition-aware preprocessing. |
+| **Sequencing-QC pairplot**<br>[![Sequencing quality-control pairplot](figures/08_qc_pairplot.png)](figures/08_qc_pairplot.png)<br>Pairwise distributions and correlations for fast multivariable quality control. | **Pathway count heatmap**<br>[![Pathway count heatmap](figures/10_pathway_heatmap.png)](figures/10_pathway_heatmap.png)<br>Annotated categorical counts, clearly separated from statistical enrichment claims. |
+
+### Advanced omics case studies
+
+| Tutorial example | Tutorial example |
+|---|---|
+| **Differential-expression dashboard**<br>[![Volcano and MA plots](figures/11_differential_expression_dashboard.png)](figures/11_differential_expression_dashboard.png)<br>Volcano and MA views with FDR and effect-size thresholds computed from the data. | **Pangenome population structure**<br>[![Pangenome frequency spectrum and PCA](figures/12_pangenome_structure.png)](figures/12_pangenome_structure.png)<br>Gene-frequency classes and PCA derived from a binary presence–absence matrix. |
+| **Pangenome Jaccard clustermap**<br>[![Pangenome Jaccard clustermap](figures/13_pangenome_clustermap.png)](figures/13_pangenome_clustermap.png)<br>Binary gene-content clustering with a distance metric appropriate for presence–absence data. | **CLR microbiome clustermap**<br>[![CLR microbiome clustermap](figures/14_microbiome_clr_clustermap.png)](figures/14_microbiome_clr_clustermap.png)<br>Zero replacement, centered-log-ratio transformation, and Euclidean distance in CLR space. |
+
+### Guided practice
+
+| Tutorial example | Tutorial example |
+|---|---|
+| **Annotated QC exercise**<br>[![Annotated sequencing QC practice figure](figures/practice_annotated_qc.png)](figures/practice_annotated_qc.png)<br>A worked practice output for annotation, thresholds, and communicating actionable QC findings. |  |
 
 ## Demonstrated capabilities
 
@@ -122,6 +167,8 @@ figures.
 - Simulated docking scores are not interpreted as experimental affinity.
 
 ## Reproducibility and quality checks
+
+![Reproducible visualization workflow](figures/workflow_diagram.svg)
 
 ```bash
 python scripts/generate_datasets.py
