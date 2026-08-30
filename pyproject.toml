@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bioviz"
-version = "1.0.0"
-description = "Reusable Seaborn plotting utilities for biology and bioinformatics visualization, taught via biology-data-viz-seaborn."
+version = "1.1.0"
+description = "Tested statistical and omics visualization utilities for biology and bioinformatics."
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 authors = [{ name = "mbilal-OU" }]
 requires-python = ">=3.10"
 dependencies = [
@@ -18,7 +18,21 @@ dependencies = [
     "scipy>=1.11",
 ]
 
+[dependency-groups]
+dev = [
+    "build>=1.2",
+    "ipykernel>=6.29",
+    "jupyter>=1.0",
+    "jupytext>=1.16",
+    "mkdocs>=1.6,<2",
+    "nbconvert>=7.16",
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.8",
+]
+
 [project.urls]
+Documentation = "https://mbilal-ou.github.io/biology-data-viz-seaborn/"
 Repository = "https://github.com/mbilal-OU/biology-data-viz-seaborn"
 Issues = "https://github.com/mbilal-OU/biology-data-viz-seaborn/issues"
 
@@ -27,6 +41,7 @@ include = ["bioviz*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--cov=bioviz --cov-report=term-missing --cov-fail-under=95"
 
 [tool.ruff]
 line-length = 110

@@ -40,7 +40,7 @@ Simulated variant call set with functional consequence and allele frequency.
 |---|---|---|
 | `variant_id` | str | Simulated rsID |
 | `chromosome` | int | Chromosome (1–22) |
-| `consequence` | str | `synonymous`, `missense`, or `common_benign` |
+| `consequence` | str | `synonymous`, `missense`, or `loss_of_function` |
 | `allele_frequency` | float | Simulated population allele frequency (0–1) |
 
 ### `gene_expression.csv` (180 rows)
@@ -49,7 +49,7 @@ log2 expression for 6 genes, control vs. treatment, 15 replicates/condition.
 | Column | Type | Description |
 |---|---|---|
 | `gene` | str | Gene symbol |
-| `direction` | str | Ground-truth simulated direction: `up`, `down`, `null` |
+| `direction` | str | Ground-truth simulated direction: `up`, `down`, `unchanged` |
 | `condition` | str | `control` or `treatment` |
 | `replicate` | int | Replicate index |
 | `expression` | float | Simulated log2 expression |
@@ -113,7 +113,8 @@ Two continuous morphological traits across 3 clades with clade-specific allometr
 | `trait2` | float | Simulated trait (e.g., metabolic-rate proxy), clade-specific slope on trait1 |
 
 ### `pathway_status_table.csv` (6 rows)
-Pathway x differential-expression-status gene counts (mock enrichment table).
+Pathway by differential-expression-status gene counts. This is a descriptive
+contingency table, not a formal enrichment analysis.
 
 | Column | Type | Description |
 |---|---|---|
@@ -122,5 +123,43 @@ Pathway x differential-expression-status gene counts (mock enrichment table).
 | `Downregulated` | int | Gene count |
 | `Unchanged` | int | Gene count |
 
-`Apoptosis` is enriched for `Upregulated`; `Cell_Cycle` is enriched for
-`Downregulated`; `Immune_Response` is mildly enriched for `Upregulated`.
+The larger counts are designed to be visually apparent. Enrichment would
+additionally require a gene universe, a statistical test, and multiple-testing
+correction.
+
+### `differential_expression.csv` (1200 rows)
+
+Analysis-ready differential-expression summary with balanced simulated
+positive and negative effects.
+
+| Column | Type | Description |
+|---|---|---|
+| `gene` | str | Simulated gene identifier |
+| `base_mean` | float | Mean normalized abundance |
+| `log2_fold_change` | float | Observed treatment effect |
+| `lfc_se` | float | Standard error of the log2 fold change |
+| `p_value` | float | Two-sided p-value from the simulated z statistic |
+| `padj` | float | Benjamini-Hochberg adjusted p-value |
+| `truth` | str | Simulation truth: `up`, `down`, or `unchanged` |
+
+### `pangenome_presence_absence.csv` (36 rows)
+
+Binary gene-family presence-absence matrix for three structured lineages.
+
+| Column | Type | Description |
+|---|---|---|
+| `genome_id` | str | Genome identifier |
+| `lineage` | str | Simulated evolutionary lineage |
+| `habitat` | str | Host, soil, or water metadata |
+| `GF_0000` ... `GF_0099` | int | Binary gene-family indicators |
+
+### `pangenome_gene_summary.csv` (100 rows)
+
+Prevalence summary calculated directly from the binary matrix.
+
+| Column | Type | Description |
+|---|---|---|
+| `gene_family` | str | Gene-family identifier |
+| `genomes_present` | int | Number of genomes containing the family |
+| `prevalence` | float | Fraction of genomes containing the family |
+| `frequency_class` | str | Core (100%), soft core (95 to <100%), shell (15 to <95%), or cloud (<15%) |

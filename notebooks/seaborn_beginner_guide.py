@@ -20,11 +20,11 @@
 import sys
 from pathlib import Path
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
 sys.path.insert(0, str(Path.cwd().parent))
-from bioviz import theme, relational, distributions, categorical, regression, matrix
+from bioviz import categorical, distributions, matrix, regression, relational, theme
 
 theme.set_theme()
 DATA = Path.cwd().parent / "data"
@@ -85,18 +85,16 @@ plt.show()
 # **Interpretation:** Both arms show the expected acute-phase shape:
 # rapid rise, peak around 4h, slow decay. The antibody-treated arm's
 # peak is visibly damped (~55% of vehicle peak, matching the simulated
-# effect size), and the SD bands do not overlap near the peak,
-# suggesting the treatment effect is unlikely to be noise at that
-# time point, though a formal test (e.g. a mixed-effects model with
-# subject as a random effect) would be needed to confirm significance.
+# effect size). The SD bands describe between-subject variation; their
+# overlap or separation is not a significance test. A mixed-effects model
+# with subject as a random effect would be needed for formal inference.
 
 # %% [markdown]
 # ## 3. Histogram / KDE / ECDF: Variant Allele Frequency Spectrum
 #
-# **Biological question:** Do missense variants show a different
-# allele-frequency distribution than synonymous or common/benign
-# variants, consistent with purifying selection acting more strongly
-# on missense changes?
+# **Biological question:** Do synonymous, missense, and loss-of-function
+# variants show increasingly rare allele-frequency spectra, as expected
+# when purifying selection is stronger against disruptive changes?
 #
 # **Why these plots:** A single distribution is best summarized with a
 # histogram or KDE. Comparing *distributions* across groups is often
@@ -118,13 +116,11 @@ plt.show()
 df_var.groupby("consequence")["allele_frequency"].median().sort_values()
 
 # %% [markdown]
-# **Interpretation:** Missense variants have the lowest median allele
-# frequency, synonymous variants sit in between, and the common/benign
-# class is shifted markedly toward intermediate-to-high frequencies.
-# This ordering is consistent with purifying selection removing
-# deleterious missense alleles from the population faster than
-# (largely neutral) synonymous ones. The ECDF makes the rightward
-# shift of the common/benign curve especially easy to see.
+# **Interpretation:** Loss-of-function variants have the lowest median
+# allele frequency, missense variants are intermediate, and synonymous
+# variants are least strongly shifted toward rare frequencies. This is
+# the seeded simulation truth. A real dataset would require demographic,
+# ancestry, ascertainment, and annotation effects to be considered.
 
 # %% [markdown]
 # ## 4. Box / Violin / Swarm: Differential Gene Expression
@@ -153,8 +149,8 @@ plt.show()
 # %% [markdown]
 # **Interpretation:** `MYC` and `IL6` shift up under treatment,
 # `TP53` and `CDKN1A` shift down, while `GAPDH` and `ACTB`, included
-# as housekeeping/null genes, show negligible change, as expected of
-# genes that should *not* respond to this treatment. The swarm overlay
+# as unchanged reference genes, show negligible change in this simulation.
+# The swarm overlay
 # confirms these shifts are consistent across replicates rather than
 # being driven by one or two outliers.
 
@@ -296,18 +292,19 @@ plt.show()
 # clade membership and fit a single pooled regression, the estimated
 # slope would be a poor summary of any individual clade's true
 # relationship, a reminder that phylogenetic (or any grouped)
-# structure should be modeled explicitly rather than pooled naively.
+# structure should be modeled explicitly rather than pooled naively. This
+# visualization stratifies by clade; it is not a phylogenetic comparative
+# model and does not correct for shared ancestry within clades.
 
 # %% [markdown]
-# ## 10. Annotated Heatmap: Pathway Enrichment
+# ## 10. Annotated Heatmap: Pathway Status Counts
 #
-# **Biological question:** Which biological pathways show a
-# significant excess of up- or down-regulated genes, i.e., which
-# pathways are enriched in the differential expression results?
+# **Biological question:** How many upregulated, downregulated, and
+# unchanged genes were assigned to each pathway?
 #
 # **Why an annotated heatmap:** With counts this small, showing the
 # actual numbers on the heatmap (not just color) lets a reader verify
-# the enrichment directly instead of trusting color intensity alone.
+# the descriptive pattern directly instead of trusting color intensity.
 
 # %%
 df_path = pd.read_csv(DATA / "pathway_status_table.csv")
@@ -316,12 +313,11 @@ theme.savefig(fig, FIGS / "10_pathway_heatmap.png")
 plt.show()
 
 # %% [markdown]
-# **Interpretation:** `Apoptosis` shows a clear excess of upregulated
-# genes and `Cell_Cycle` a clear excess of downregulated genes relative
-# to the other categories, a pattern consistent with a treatment that
-# triggers programmed cell death while halting proliferation (e.g., a
-# genotoxic or cell-cycle-arresting agent). `Immune_Response` also
-# shows mild upregulation enrichment.
+# **Interpretation:** `Apoptosis` has the largest upregulated count and
+# `Cell_Cycle` the largest downregulated count in the simulated table.
+# Calling these pathways enriched would require a background gene universe,
+# an enrichment test, and multiple-testing correction, none of which is
+# encoded in this descriptive figure.
 
 # %% [markdown]
 # ## Summary
@@ -337,7 +333,7 @@ plt.show()
 # | 7 | Clustermap | microbiome_abundance | Body-site-driven community clustering |
 # | 8 | Pairplot | qc_metrics | QC artifact detection across a sample batch |
 # | 9 | Jointplot | phylo_traits | Clade-specific trait relationships |
-# | 10 | Annotated heatmap | pathway_status_table | Pathway enrichment |
+# | 10 | Annotated heatmap | pathway_status_table | Pathway status counts |
 #
 # Next steps: see `CONTRIBUTING.md` to add a new dataset + plot pair,
 # or explore `bioviz/` directly to reuse these functions in your own

@@ -14,6 +14,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from scipy.stats import norm
 
 RNG = np.random.default_rng(42)
 OUT = Path(__file__).resolve().parents[1] / "data"
@@ -24,6 +25,18 @@ def save(df: pd.DataFrame, name: str) -> None:
     path = OUT / name
     df.to_csv(path, index=False)
     print(f"wrote {path}  ({len(df)} rows, {len(df.columns)} cols)")
+
+
+def benjamini_hochberg(p_values: np.ndarray) -> np.ndarray:
+    """Return Benjamini-Hochberg adjusted p-values."""
+    p_values = np.asarray(p_values, dtype=float)
+    order = np.argsort(p_values)
+    ranked = p_values[order]
+    adjusted = ranked * len(ranked) / np.arange(1, len(ranked) + 1)
+    adjusted = np.minimum.accumulate(adjusted[::-1])[::-1].clip(0, 1)
+    result = np.empty_like(adjusted)
+    result[order] = adjusted
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -84,9 +97,9 @@ def gen_timecourse_cytokines(n_subjects: int = 10) -> pd.DataFrame:
             response = (
                 60
                 * subj_amp
-                * (timepoints ** shape_k)
+                * (timepoints**shape_k)
                 * np.exp(-timepoints / shape_theta)
-                / (shape_theta ** shape_k * np.exp(-shape_k))
+                / (shape_theta**shape_k * np.exp(-shape_k))
             )
             noise = RNG.normal(0, 2.5, len(timepoints))
             il6 = np.clip(response + noise, 0.5, None)
@@ -109,17 +122,16 @@ def gen_timecourse_cytokines(n_subjects: int = 10) -> pd.DataFrame:
 def gen_variants(n: int = 2000) -> pd.DataFrame:
     """
     Allele frequency spectrum split by functional consequence class.
-    Synonymous variants follow the classic neutral-theory shape skewed
-    toward rare alleles (Beta(0.4, 6)); missense variants are shifted
-    further toward rare (purifying selection, Beta(0.3, 9)); a small
-    class of likely-benign common variants (Beta(2, 2)) represents
-    variants that have drifted/fixed toward intermediate-to-high
-    frequency, giving histplot/KDE/ECDF genuinely distinct shapes.
+    Synonymous, missense, and loss-of-function variants are all valid
+    consequence classes. Increasingly disruptive classes are simulated
+    with progressively rarer allele-frequency spectra, representing
+    stronger purifying selection without mixing consequence and clinical
+    classification ontologies.
     """
     consequence_params = {
-        "synonymous": (0.4, 6.0, int(n * 0.45)),
-        "missense": (0.3, 9.0, int(n * 0.40)),
-        "common_benign": (2.0, 2.0, int(n * 0.15)),
+        "synonymous": (0.55, 5.0, int(n * 0.45)),
+        "missense": (0.35, 8.0, int(n * 0.40)),
+        "loss_of_function": (0.20, 12.0, int(n * 0.15)),
     }
     rows = []
     for consequence, (a, b, count) in consequence_params.items():
@@ -146,15 +158,15 @@ def gen_gene_expression(n_replicates: int = 15) -> pd.DataFrame:
     log2 expression for 6 genes under control vs. treatment, with three
     ground-truth behaviours baked in so the boxplot/violin/swarm tutorial
     has real signal to interpret: two upregulated genes, two
-    downregulated genes, two unaffected (null) genes. Expression is
+    downregulated genes, two unchanged genes. Expression is
     modeled log-normally (standard for RNA-seq-like count data).
     """
     genes = {
         "TP53": ("down", -1.2),
         "MYC": ("up", 1.6),
-        "GAPDH": ("null", 0.0),
+        "GAPDH": ("unchanged", 0.0),
         "IL6": ("up", 2.1),
-        "ACTB": ("null", 0.05),
+        "ACTB": ("unchanged", 0.05),
         "CDKN1A": ("down", -0.8),
     }
     rows = []
@@ -261,10 +273,18 @@ def gen_microbiome_abundance(n_samples: int = 24) -> pd.DataFrame:
     so clustermap(z_score=0) reveals real site-driven clustering.
     """
     species = [
-        "Bacteroides_fragilis", "Faecalibacterium_prausnitzii", "Escherichia_coli",
-        "Lactobacillus_acidophilus", "Prevotella_copri", "Bifidobacterium_longum",
-        "Staphylococcus_epidermidis", "Cutibacterium_acnes", "Corynebacterium_striatum",
-        "Streptococcus_mitis", "Akkermansia_muciniphila", "Ruminococcus_bromii",
+        "Bacteroides_fragilis",
+        "Faecalibacterium_prausnitzii",
+        "Escherichia_coli",
+        "Lactobacillus_acidophilus",
+        "Prevotella_copri",
+        "Bifidobacterium_longum",
+        "Staphylococcus_epidermidis",
+        "Cutibacterium_acnes",
+        "Corynebacterium_striatum",
+        "Streptococcus_mitis",
+        "Akkermansia_muciniphila",
+        "Ruminococcus_bromii",
     ]
     gut_alpha = np.array([8, 7, 3, 4, 6, 5, 0.5, 0.3, 0.4, 1, 3, 4])
     skin_alpha = np.array([0.3, 0.2, 1, 0.5, 0.2, 0.3, 9, 7, 6, 2, 0.2, 0.2])
@@ -338,11 +358,7 @@ def gen_phylo_traits(n_per_clade: int = 40) -> pd.DataFrame:
     for clade, p in clades.items():
         trait1 = RNG.normal(p["trait1_mean"], 0.6, n_per_clade)
         trait2 = p["intercept"] + p["slope"] * trait1 + RNG.normal(0, 0.35, n_per_clade)
-        rows.append(
-            pd.DataFrame(
-                {"clade": clade, "trait1": trait1.round(3), "trait2": trait2.round(3)}
-            )
-        )
+        rows.append(pd.DataFrame({"clade": clade, "trait1": trait1.round(3), "trait2": trait2.round(3)}))
     return pd.concat(rows, ignore_index=True)
 
 
@@ -351,15 +367,17 @@ def gen_phylo_traits(n_per_clade: int = 40) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 def gen_pathway_status_table() -> pd.DataFrame:
     """
-    Counts of genes-per-pathway falling into each functional status
-    category, from a mock enrichment analysis. Values are hand-tuned so
-    that "Apoptosis" and "Cell_Cycle" show enrichment for
-    Upregulated/Downregulated respectively -- i.e. the annotated heatmap
-    tutorial has an actual enrichment pattern to point at and interpret.
+    Descriptive counts of genes per pathway and expression-status class.
+    These counts are intentionally not called enrichment results because
+    no background gene universe or statistical test is represented.
     """
     pathways = [
-        "Apoptosis", "Cell_Cycle", "DNA_Repair", "Immune_Response",
-        "Lipid_Metabolism", "Oxidative_Stress",
+        "Apoptosis",
+        "Cell_Cycle",
+        "DNA_Repair",
+        "Immune_Response",
+        "Lipid_Metabolism",
+        "Oxidative_Stress",
     ]
     statuses = ["Upregulated", "Downregulated", "Unchanged"]
     base = RNG.integers(2, 8, size=(len(pathways), len(statuses)))
@@ -369,6 +387,94 @@ def gen_pathway_status_table() -> pd.DataFrame:
     df.loc["Immune_Response", "Upregulated"] += 9
     df.index.name = "pathway"
     return df.reset_index()
+
+
+# ---------------------------------------------------------------------------
+# 11. differential_expression.csv -- analysis-ready DE summary
+# ---------------------------------------------------------------------------
+def gen_differential_expression(n_genes: int = 1200) -> pd.DataFrame:
+    """Simulate a differential-expression results table with known truth.
+
+    Most genes are null. A balanced subset has positive or negative effects.
+    Standard errors increase for low-abundance genes, so the volcano and MA
+    plots illustrate why effect size and evidence must be read together.
+    """
+    base_mean = RNG.lognormal(mean=4.2, sigma=1.25, size=n_genes)
+    truth = np.full(n_genes, "unchanged", dtype=object)
+    effect = RNG.normal(0, 0.16, n_genes)
+    selected = RNG.choice(n_genes, size=120, replace=False)
+    up, down = selected[:60], selected[60:]
+    truth[up] = "up"
+    truth[down] = "down"
+    effect[up] = RNG.normal(1.9, 0.38, len(up))
+    effect[down] = RNG.normal(-1.8, 0.38, len(down))
+
+    standard_error = 0.16 + 0.65 / np.sqrt(np.log10(base_mean + 10))
+    observed = effect + RNG.normal(0, standard_error * 0.35, n_genes)
+    z_score = observed / standard_error
+    p_value = 2 * norm.sf(np.abs(z_score))
+    padj = benjamini_hochberg(p_value)
+    return pd.DataFrame(
+        {
+            "gene": [f"gene_{index:04d}" for index in range(n_genes)],
+            "base_mean": base_mean.round(3),
+            "log2_fold_change": observed.round(4),
+            "lfc_se": standard_error.round(4),
+            # Stabilize CSV output across SciPy/Python builds that can differ
+            # at the final floating-point bit in the survival function.
+            "p_value": p_value.round(15),
+            "padj": padj.round(15),
+            "truth": truth,
+        }
+    )
+
+
+# ---------------------------------------------------------------------------
+# 12-13. pangenome_presence_absence.csv and pangenome_gene_summary.csv
+# ---------------------------------------------------------------------------
+def gen_pangenome_presence(n_genomes: int = 36) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Simulate a structured bacterial gene presence-absence matrix."""
+    if n_genomes % 3:
+        raise ValueError("n_genomes must be divisible by three")
+    per_lineage = n_genomes // 3
+    lineages = np.repeat(["Lineage_A", "Lineage_B", "Lineage_C"], per_lineage)
+    habitats = np.tile(["Host", "Soil", "Water"], n_genomes // 3)
+    matrix = np.zeros((n_genomes, 100), dtype=int)
+
+    matrix[:, :45] = 1
+    for column in range(45, 55):
+        matrix[:, column] = 1
+        absent = RNG.choice(n_genomes, size=1 if column < 50 else 2, replace=False)
+        matrix[absent, column] = 0
+    for offset, column in enumerate(range(55, 80)):
+        associated = offset % 3
+        probabilities = np.where(np.arange(n_genomes) // per_lineage == associated, 0.82, 0.12)
+        matrix[:, column] = RNG.binomial(1, probabilities)
+    for column in range(80, 100):
+        present = RNG.choice(n_genomes, size=int(RNG.integers(1, 5)), replace=False)
+        matrix[present, column] = 1
+
+    gene_names = [f"GF_{index:04d}" for index in range(matrix.shape[1])]
+    presence = pd.DataFrame(matrix, columns=gene_names)
+    presence.insert(0, "habitat", habitats)
+    presence.insert(0, "lineage", lineages)
+    presence.insert(0, "genome_id", [f"Genome_{index + 1:02d}" for index in range(n_genomes)])
+
+    prevalence = matrix.mean(axis=0)
+    frequency_class = np.select(
+        [prevalence >= 0.99, prevalence >= 0.95, prevalence >= 0.15],
+        ["Core", "Soft core", "Shell"],
+        default="Cloud",
+    )
+    summary = pd.DataFrame(
+        {
+            "gene_family": gene_names,
+            "genomes_present": matrix.sum(axis=0),
+            "prevalence": prevalence.round(4),
+            "frequency_class": frequency_class,
+        }
+    )
+    return presence, summary
 
 
 def main() -> None:
@@ -382,6 +488,10 @@ def main() -> None:
     save(gen_qc_metrics(), "qc_metrics.csv")
     save(gen_phylo_traits(), "phylo_traits.csv")
     save(gen_pathway_status_table(), "pathway_status_table.csv")
+    save(gen_differential_expression(), "differential_expression.csv")
+    presence, summary = gen_pangenome_presence()
+    save(presence, "pangenome_presence_absence.csv")
+    save(summary, "pangenome_gene_summary.csv")
 
 
 if __name__ == "__main__":

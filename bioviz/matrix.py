@@ -21,8 +21,15 @@ def metabolite_corr_heatmap(df: pd.DataFrame, ax: plt.Axes | None = None) -> tup
     corr = numeric.corr()
     fig, ax = (ax.figure, ax) if ax is not None else plt.subplots(figsize=(8, 7))
     sns.heatmap(
-        corr, cmap=theme.DIVERGING_PALETTE, center=0, annot=True, fmt=".2f",
-        square=True, linewidths=0.5, ax=ax, cbar_kws={"label": "Pearson r"},
+        corr,
+        cmap=theme.DIVERGING_PALETTE,
+        center=0,
+        annot=True,
+        fmt=".2f",
+        square=True,
+        linewidths=0.5,
+        ax=ax,
+        cbar_kws={"label": "Pearson r"},
     )
     ax.set_title("Metabolite-Metabolite Correlation")
     return fig, ax
@@ -38,7 +45,11 @@ def microbiome_clustermap(df: pd.DataFrame):
     """
     piv = df.pivot_table(index="species", columns="sample", values="relative_abundance", fill_value=0)
     g = sns.clustermap(
-        piv, cmap="mako", z_score=0, figsize=(9, 8), linewidths=0.3,
+        piv,
+        cmap="mako",
+        z_score=0,
+        figsize=(9, 8),
+        linewidths=0.3,
         cbar_kws={"label": "z-scored relative abundance"},
     )
     g.figure.suptitle("Microbiome Composition Clustering", y=1.02, fontweight="bold")
@@ -49,8 +60,12 @@ def qc_pairplot(df: pd.DataFrame):
     """Pairwise scatter matrix of sequencing QC metrics, colored by batch."""
     cols = ["duplicates_pct", "coverage_mean", "gc_content", "q30_pct"]
     g = sns.pairplot(
-        df, vars=cols, hue="batch", palette=theme.CATEGORICAL_PALETTE,
-        diag_kind="kde", plot_kws={"alpha": 0.6, "s": 25},
+        df,
+        vars=cols,
+        hue="batch",
+        palette=theme.CATEGORICAL_PALETTE,
+        diag_kind="kde",
+        plot_kws={"alpha": 0.6, "s": 25},
     )
     g.figure.suptitle("Sequencing QC Metrics", y=1.02, fontweight="bold")
     return g
@@ -59,8 +74,15 @@ def qc_pairplot(df: pd.DataFrame):
 def phylo_traits_jointplot(df: pd.DataFrame):
     """Jointplot (KDE) of two morphological traits, colored by clade."""
     g = sns.jointplot(
-        data=df, x="trait1", y="trait2", hue="clade", kind="kde",
-        palette=theme.CATEGORICAL_PALETTE, height=6.5, fill=True, alpha=0.6,
+        data=df,
+        x="trait1",
+        y="trait2",
+        hue="clade",
+        kind="kde",
+        palette=theme.CATEGORICAL_PALETTE,
+        height=6.5,
+        fill=True,
+        alpha=0.6,
     )
     g.set_axis_labels("Trait 1 (body-size proxy)", "Trait 2 (metabolic-rate proxy)")
     g.figure.suptitle("Trait-Trait Relationship by Clade", y=1.02, fontweight="bold")
@@ -71,12 +93,20 @@ def phylo_traits_jointplot(df: pd.DataFrame):
 
 
 def pathway_status_heatmap(df: pd.DataFrame, ax: plt.Axes | None = None) -> tuple[plt.Figure, plt.Axes]:
-    """Annotated integer heatmap of gene counts per pathway x status."""
+    """Annotated integer heatmap of gene counts per pathway and status.
+
+    This is a descriptive count display, not a pathway-enrichment test.
+    """
     indexed = df.set_index("pathway") if "pathway" in df.columns else df
     fig, ax = (ax.figure, ax) if ax is not None else plt.subplots(figsize=(7, 6))
     sns.heatmap(
-        indexed, annot=True, fmt="d", cmap="crest", linewidths=0.5,
-        cbar_kws={"label": "Gene count"}, ax=ax,
+        indexed,
+        annot=True,
+        fmt="d",
+        cmap="crest",
+        linewidths=0.5,
+        cbar_kws={"label": "Gene count"},
+        ax=ax,
     )
-    ax.set_title("Pathway Enrichment by Functional Status")
+    ax.set_title("Gene Counts by Pathway and Expression Status")
     return fig, ax

@@ -6,8 +6,8 @@ authors:
   - name: "mbilal-OU"
 repository-code: "https://github.com/mbilal-OU/biology-data-viz-seaborn"
 license: MIT
-version: 1.0.0
-date-released: "2026-08-28"
+version: 1.1.0
+date-released: "2026-08-29"
 keywords:
   - seaborn
   - python
@@ -16,3 +16,7 @@ keywords:
   - biology
   - matplotlib
   - tutorial
+  - differential-expression
+  - pangenome
+  - microbiome
+  - compositional-data

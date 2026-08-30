@@ -35,10 +35,7 @@ SECTIONS = [
         dataset="`data/docking_scores.csv`",
         dataset_desc="360 rows. Simulated virtual-screening results against 3 protein targets.",
         image="figures/01_docking_scatter.png",
-        code=(
-            'df = pd.read_csv("data/docking_scores.csv")\n'
-            "fig, ax = relational.docking_scatter(df)"
-        ),
+        code=('df = pd.read_csv("data/docking_scores.csv")\nfig, ax = relational.docking_scatter(df)'),
         interpretation=(
             "Binding score is **not** monotonic in logP: each target "
             "shows a clear inverted-U pattern, worsening at both very low "
@@ -68,7 +65,7 @@ SECTIONS = [
         plot_kind="Line plot",
         what_it_is=(
             "A line plot connects ordered observations, and with "
-            "`errorbar=\"sd\"` it also draws a shaded band showing spread "
+            '`errorbar="sd"` it also draws a shaded band showing spread '
             "at each point. Use it whenever the x-axis is naturally "
             "ordered (time, dose, distance) and you have repeated "
             "measurements at each x value; a scatter plot alone would "
@@ -83,8 +80,7 @@ SECTIONS = [
         dataset_desc="140 rows. IL-6 concentration over 24h, vehicle vs. antibody, 10 subjects/arm.",
         image="figures/02_cytokine_timecourse.png",
         code=(
-            'df = pd.read_csv("data/timecourse_cytokines.csv")\n'
-            "fig, ax = relational.cytokine_timecourse(df)"
+            'df = pd.read_csv("data/timecourse_cytokines.csv")\nfig, ax = relational.cytokine_timecourse(df)'
         ),
         interpretation=(
             "Both arms show the expected acute-phase shape: rapid rise, "
@@ -115,8 +111,8 @@ SECTIONS = [
             "A histogram (or KDE) shows the shape of a single "
             "distribution. An ECDF (empirical cumulative distribution "
             "function) shows the same information without binning "
-            "artifacts, and makes it trivial to read off \"what fraction "
-            "of the data is below X\", which is often the more useful "
+            'artifacts, and makes it trivial to read off "what fraction '
+            'of the data is below X", which is often the more useful '
             "question when comparing distributions across groups."
         ),
         question=(
@@ -273,10 +269,7 @@ SECTIONS = [
         dataset="`data/metabolites.csv`",
         dataset_desc="60 rows. Targeted metabolomics panel, 9 metabolites drawn from 3 correlated latent pathway factors.",
         image="figures/06_metabolite_heatmap.png",
-        code=(
-            'df = pd.read_csv("data/metabolites.csv")\n'
-            "fig, ax = matrix.metabolite_corr_heatmap(df)"
-        ),
+        code=('df = pd.read_csv("data/metabolites.csv")\nfig, ax = matrix.metabolite_corr_heatmap(df)'),
         interpretation=(
             "Three clear correlation blocks emerge: glycolysis "
             "(glucose/pyruvate/lactate), TCA cycle "
@@ -315,10 +308,7 @@ SECTIONS = [
         dataset="`data/microbiome_abundance.csv`",
         dataset_desc="288 rows in long format: 12 species x 24 samples (12 gut, 12 skin), relative abundance.",
         image="figures/07_microbiome_clustermap.png",
-        code=(
-            'df = pd.read_csv("data/microbiome_abundance.csv")\n'
-            "g = matrix.microbiome_clustermap(df)"
-        ),
+        code=('df = pd.read_csv("data/microbiome_abundance.csv")\ng = matrix.microbiome_clustermap(df)'),
         interpretation=(
             "Samples cluster into two clean groups that correspond "
             "exactly to body site, and the species dendrogram separates "
@@ -359,16 +349,13 @@ SECTIONS = [
         dataset="`data/qc_metrics.csv`",
         dataset_desc="96 rows. Per-sample sequencing QC for a 96-sample batch across 3 sub-batches.",
         image="figures/08_qc_pairplot.png",
-        code=(
-            'df = pd.read_csv("data/qc_metrics.csv")\n'
-            "g = matrix.qc_pairplot(df)"
-        ),
+        code=('df = pd.read_csv("data/qc_metrics.csv")\ng = matrix.qc_pairplot(df)'),
         interpretation=(
             "`coverage_mean` and `duplicates_pct` are clearly negatively "
             "correlated: samples with lower coverage tend to show "
             "higher PCR duplication, a common artifact of low-input "
             "library preparation. `q30_pct` tracks the same latent "
-            "\"input quality\" factor. No batch stands out as a "
+            '"input quality" factor. No batch stands out as a '
             "systematic outlier."
         ),
         requirements=[
@@ -388,7 +375,7 @@ SECTIONS = [
         plot_kind="Jointplot (KDE)",
         what_it_is=(
             "A jointplot combines a bivariate relationship with each "
-            "variable's marginal distribution. With `kind=\"kde\"` and "
+            'variable\'s marginal distribution. With `kind="kde"` and '
             "`hue`, it compares both the *shape/slope* of a relationship "
             "and the *location* of each group's distribution "
             "simultaneously, useful for spotting Simpson's-paradox-style "
@@ -403,10 +390,7 @@ SECTIONS = [
         dataset="`data/phylo_traits.csv`",
         dataset_desc="120 rows. Two continuous traits across 3 clades, each with its own allometric slope.",
         image="figures/09_phylo_jointplot.png",
-        code=(
-            'df = pd.read_csv("data/phylo_traits.csv")\n'
-            "g = matrix.phylo_traits_jointplot(df)"
-        ),
+        code=('df = pd.read_csv("data/phylo_traits.csv")\ng = matrix.phylo_traits_jointplot(df)'),
         interpretation=(
             "`Clade_B` is fully separated in trait-space with a shallow "
             "slope. `Clade_A` and `Clade_C` share a similar trait-1 "
@@ -420,7 +404,7 @@ SECTIONS = [
         requirements=[
             "two continuous columns (x and y)",
             "optionally: a categorical `hue` column to compare across groups",
-            "if the legend overlaps your data, move it: `sns.move_legend(g.ax_joint, \"upper left\", bbox_to_anchor=(1.15, 1.2))`",
+            'if the legend overlaps your data, move it: `sns.move_legend(g.ax_joint, "upper left", bbox_to_anchor=(1.15, 1.2))`',
         ],
         adapt_code=(
             'g = sns.jointplot(data=my_df, x="trait_x", y="trait_y", hue="group_column", kind="kde", fill=True)\n'
@@ -429,7 +413,7 @@ SECTIONS = [
     ),
     dict(
         num="10",
-        title="Annotated Heatmap: Pathway Enrichment",
+        title="Annotated Heatmap: Pathway Status Counts",
         plot_kind="Annotated integer heatmap",
         what_it_is=(
             "The same annotated-heatmap technique as #6, applied to "
@@ -439,24 +423,20 @@ SECTIONS = [
             "just color."
         ),
         question=(
-            "Which biological pathways show a significant excess of "
-            "up- or down-regulated genes, meaning which pathways are "
-            "enriched in a differential expression result?"
+            "How many upregulated, downregulated, and unchanged genes "
+            "were assigned to each pathway?"
         ),
         dataset="`data/pathway_status_table.csv`",
-        dataset_desc="6 rows. Gene counts per pathway × functional status, from a mock enrichment analysis.",
+        dataset_desc="6 rows. Descriptive gene counts per pathway and functional status.",
         image="figures/10_pathway_heatmap.png",
         code=(
-            'df = pd.read_csv("data/pathway_status_table.csv")\n'
-            "fig, ax = matrix.pathway_status_heatmap(df)"
+            'df = pd.read_csv("data/pathway_status_table.csv")\nfig, ax = matrix.pathway_status_heatmap(df)'
         ),
         interpretation=(
-            "`Apoptosis` shows a clear excess of upregulated genes and "
-            "`Cell_Cycle` a clear excess of downregulated genes relative "
-            "to the other categories, consistent with a treatment that "
-            "triggers programmed cell death while halting proliferation "
-            "(e.g. a genotoxic or cell-cycle-arresting agent). "
-            "`Immune_Response` also shows mild upregulation enrichment."
+            "`Apoptosis` has the largest upregulated count and "
+            "`Cell_Cycle` the largest downregulated count. Calling either "
+            "pathway enriched would require a background gene universe, "
+            "a formal test, and multiple-testing correction."
         ),
         requirements=[
             "a table already shaped as rows × categories (a contingency table), with an index column to set as row labels",
@@ -490,7 +470,7 @@ SECTIONS = [
             "import matplotlib.pyplot as plt\n\n"
             "fig, ax = plt.subplots(figsize=(6, 4.5))\n"
             'ax.scatter(df["coverage_mean"], df["duplicates_pct"], alpha=0.5, color="gray")\n\n'
-            "low_cov = df[df[\"coverage_mean\"] < 30]\n"
+            'low_cov = df[df["coverage_mean"] < 30]\n'
             'ax.scatter(low_cov["coverage_mean"], low_cov["duplicates_pct"], color="crimson", label="coverage < 30x")\n'
             'ax.axvline(30, color="crimson", linestyle="--", linewidth=1)\n'
             "ax.legend()"
@@ -509,7 +489,7 @@ SECTIONS = [
         adapt_code=(
             "fig, ax = plt.subplots()\n"
             'ax.scatter(my_df["x"], my_df["y"], alpha=0.5, color="gray")\n'
-            "flagged = my_df[my_df[\"x\"] < threshold]\n"
+            'flagged = my_df[my_df["x"] < threshold]\n'
             'ax.scatter(flagged["x"], flagged["y"], color="crimson", label="flagged")\n'
             "ax.legend()"
         ),
