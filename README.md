@@ -203,6 +203,11 @@ animation, and low-level figure engineering are covered in the companion
 [biology-data-viz-matplotlib](https://github.com/mbilal-OU/biology-data-viz-matplotlib)
 repository.
 
+## Portfolio series
+
+- **Seaborn** · [Matplotlib](https://github.com/mbilal-OU/biology-data-viz-matplotlib) · [Plotly](https://github.com/mbilal-OU/Biology-data-viz-plotly)
+- [ggplot2](https://github.com/mbilal-OU/Biology-data-viz-ggplot2) · [ggtree + ComplexHeatmap](https://github.com/mbilal-OU/Biology-data-viz-ggtree-complexheatmap) · [Shiny](https://github.com/mbilal-OU/Biology-data-viz-shiny) · [Gnuplot](https://github.com/mbilal-OU/biology-data-viz-gnuplot)
+
 ## Citation and license
 
 Citation metadata are provided in [`CITATION.cff`](CITATION.cff). The code is
