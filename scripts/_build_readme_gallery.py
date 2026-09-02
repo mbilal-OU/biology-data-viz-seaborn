@@ -39,12 +39,11 @@ SECTIONS = [
         interpretation=(
             "Binding score is **not** monotonic in logP: each target "
             "shows a clear inverted-U pattern, worsening at both very low "
-            "and very high lipophilicity. This matches known "
-            "medicinal-chemistry behavior: overly hydrophilic ligands bind "
-            "poorly to a typically hydrophobic pocket, while overly "
-            "hydrophobic ligands lose entropic favorability and "
-            "solubility. `GPCR_C` shows the best (most negative) scores "
-            "overall."
+            "and very high lipophilicity. That curvature was built into "
+            "this simulation and must not be treated as evidence for a "
+            "binding mechanism. `GPCR_C` has the lowest simulated scores "
+            "overall. Real docking results require pose inspection, "
+            "appropriate controls, and experimental validation."
         ),
         requirements=[
             "one continuous x variable (a numeric column)",
@@ -85,10 +84,10 @@ SECTIONS = [
         interpretation=(
             "Both arms show the expected acute-phase shape: rapid rise, "
             "peak around 4h, slow decay. The antibody-treated arm's peak "
-            "is visibly damped to roughly half the vehicle peak, and the "
-            "SD bands don't overlap near the peak, suggestive of a real "
-            "effect, though a formal mixed-effects model would be needed "
-            "to confirm significance."
+            "is lower in this simulation. The shaded regions show sample "
+            "standard deviations, not confidence intervals, and their "
+            "overlap is not a significance test. Repeated measurements "
+            "require an appropriate longitudinal or mixed-effects model."
         ),
         requirements=[
             "one ordered x variable (time, dose, etc.)",
@@ -227,14 +226,13 @@ SECTIONS = [
             "2            none  102.54479   8.591107"
         ),
         interpretation=(
-            "The fitted parameters make the mechanism unambiguous: "
-            "`competitive` raises Km roughly 3x with Vmax essentially "
-            "unchanged; `noncompetitive` halves Vmax with Km unchanged, "
-            "textbook signatures of each inhibition type, correctly "
-            "recovered from noisy simulated data. `tests/test_bioviz.py` "
-            "checks this holds within 15–20% of ground truth on every CI "
-            "run, so a future bug in the fitting code would fail the "
-            "build, not just look slightly off in a plot."
+            "Under the specified simulation and Michaelis-Menten model, "
+            "`competitive` raises estimated Km with little change in Vmax, "
+            "while `noncompetitive` lowers estimated Vmax with little "
+            "change in Km. This pattern is model-dependent and does not "
+            "establish a mechanism by itself. Residual diagnostics, "
+            "parameter uncertainty, alternative models, and independent "
+            "experiments are required for real data."
         ),
         requirements=[
             "one x column representing a dose/concentration/independent variable",
@@ -359,7 +357,7 @@ SECTIONS = [
             "systematic outlier."
         ),
         requirements=[
-            "several numeric columns to compare pairwise (3–6 is usually the readable range)",
+            "several numeric columns to compare pairwise (3-6 is usually the readable range)",
             "optionally: a categorical `hue` column to color points by group",
         ],
         adapt_code=(
@@ -398,8 +396,9 @@ SECTIONS = [
             "steeply per unit of trait 1 than `Clade_A` does. Pooling "
             "all three clades into a single regression would blur both "
             "distinctions: it would average away Clade_B's separate "
-            "location and Clade_A/C's different slopes, misrepresenting "
-            "every individual clade's true relationship."
+            "location and Clade_A/C's different simulated slopes. This "
+            "describes the generated data and is not an evolutionary "
+            "claim about real clades."
         ),
         requirements=[
             "two continuous columns (x and y)",

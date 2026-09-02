@@ -237,8 +237,9 @@ plt.show()
 # correspond exactly to body site, and the species dendrogram
 # separates gut-dominant taxa (*Bacteroides*, *Faecalibacterium*,
 # *Prevotella*) from skin-dominant taxa (*Staphylococcus*,
-# *Cutibacterium*, *Corynebacterium*), recovering the known ecological
-# distinction between these two niches from composition data alone.
+# *Cutibacterium*, *Corynebacterium*). This reflects the group structure
+# built into the simulation; a real microbiome result would also require
+# compositional methods, covariate review, and independent validation.
 
 # %% [markdown]
 # ## 8. Pairplot: Sequencing QC Metrics
@@ -288,7 +289,7 @@ plt.show()
 
 # %% [markdown]
 # **Interpretation:** Each clade occupies a distinct region of
-# trait-space with its own trait1–trait2 slope. Notably, if you ignored
+# trait-space with its own trait1-to-trait2 slope. Notably, if you ignored
 # clade membership and fit a single pooled regression, the estimated
 # slope would be a poor summary of any individual clade's true
 # relationship, a reminder that phylogenetic (or any grouped)

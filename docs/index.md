@@ -10,8 +10,8 @@ figure design.
 - [Advanced gallery](gallery.md)
 - [Methods and guardrails](methods.md)
 - [Environment setup](setup.md)
-- [Repository README](https://github.com/mbilal-OU/biology-data-viz-seaborn#readme)
-- [Complete data dictionary](https://github.com/mbilal-OU/biology-data-viz-seaborn/blob/main/data/data_dictionary.md)
+- [Repository README](https://github.com/mbilal-OU/seaborn-biological-statistics#readme)
+- [Complete data dictionary](https://github.com/mbilal-OU/seaborn-biological-statistics/blob/main/data/data_dictionary.md)
 
 ## Architecture
 

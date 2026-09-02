@@ -39,9 +39,9 @@ Simulated variant call set with functional consequence and allele frequency.
 | Column | Type | Description |
 |---|---|---|
 | `variant_id` | str | Simulated rsID |
-| `chromosome` | int | Chromosome (1–22) |
+| `chromosome` | int | Chromosome (1-22) |
 | `consequence` | str | `synonymous`, `missense`, or `loss_of_function` |
-| `allele_frequency` | float | Simulated population allele frequency (0–1) |
+| `allele_frequency` | float | Simulated population allele frequency (0-1) |
 
 ### `gene_expression.csv` (180 rows)
 log2 expression for 6 genes, control vs. treatment, 15 replicates/condition.
@@ -86,7 +86,7 @@ Long-format relative abundance, 12 species x 24 samples (12 gut, 12 skin), Diric
 | `sample` | str | Sample identifier |
 | `body_site` | str | `gut` or `skin` |
 | `species` | str | Species name |
-| `relative_abundance` | float | Relative abundance (0–1, sums to 1 per sample) |
+| `relative_abundance` | float | Relative abundance (0-1, sums to 1 per sample) |
 
 ### `qc_metrics.csv` (96 rows)
 Per-sample sequencing QC for a 96-sample batch across 3 sub-batches.

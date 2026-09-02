@@ -1,15 +1,15 @@
-# Biological Data Visualization with Seaborn
+# Biological Statistics Visualization with Seaborn
 
-[![CI](https://github.com/mbilal-OU/biology-data-viz-seaborn/actions/workflows/ci.yml/badge.svg)](https://github.com/mbilal-OU/biology-data-viz-seaborn/actions/workflows/ci.yml)
-[![Docs](https://github.com/mbilal-OU/biology-data-viz-seaborn/actions/workflows/docs.yml/badge.svg)](https://github.com/mbilal-OU/biology-data-viz-seaborn/actions/workflows/docs.yml)
+[![CI](https://github.com/mbilal-OU/seaborn-biological-statistics/actions/workflows/ci.yml/badge.svg)](https://github.com/mbilal-OU/seaborn-biological-statistics/actions/workflows/ci.yml)
+[![Docs](https://github.com/mbilal-OU/seaborn-biological-statistics/actions/workflows/docs.yml/badge.svg)](https://github.com/mbilal-OU/seaborn-biological-statistics/actions/workflows/docs.yml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776AB)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2E7D32)](LICENSE)
 
-A tested portfolio of statistical visualization patterns for biology and
-bioinformatics. The repository combines analysis-ready tables, reusable
-Python functions, narrative notebooks, automated tests, and publication
-exports. It emphasizes choosing a defensible representation, not merely
-calling a plotting function.
+A tested portfolio for exploring biological distributions, relationships, and
+group structure with Seaborn. Its distinctive role is high-level statistical
+graphics from tidy data: semantic mappings, distribution-aware displays,
+faceted comparisons, and matrix exploration, backed by reusable functions and
+input validation.
 
 All included datasets are seeded simulations with documented ground truth.
 They support reproducible testing and do not represent experimental evidence.
@@ -28,65 +28,53 @@ open the matching notebook, and then reuse the tested plotting functions.
 | Understand scientific limitations | Read the scientific guardrails before interpreting a plot |
 | Build a publication figure | Export PNG for review and SVG/PDF for final editing |
 
-### A growing visualization series
+### Why Seaborn has its own repository
 
-The two current repositories establish a reusable pattern for a broader public
-learning series:
-
-- **Seaborn**: statistical graphics, tidy data, semantic mappings, distributions,
-  uncertainty, and omics exploration.
-- **Matplotlib**: low-level figure engineering, custom geometry, dashboards,
-  animation, phylogenomics, genome tracks, and publication layout.
-- **Future Python and R modules** can follow the same structure for interactive
-  graphics and specialist ecosystems such as Plotly, Altair, ggplot2, ggtree,
-  ComplexHeatmap, and Shiny.
-
-Each module should remain independently runnable, visual from the first screen,
-scientifically careful, and strong enough to serve as both a tutorial and a
-portfolio artifact.
+Seaborn is used here for rapid, statistically informed exploration of tidy
+biological tables. Matplotlib handles custom geometry, Plotly handles direct
+interaction, ggplot2 demonstrates declarative layered graphics, ggtree and
+ComplexHeatmap align evolutionary and matrix data, Shiny builds reactive
+applications, and Gnuplot supports headless command-line rendering.
 
 ## Visual tutorial gallery
 
 These are rendered outputs from the repository, not decorative screenshots.
-Click any figure to open the full-resolution version. The numbered filenames
-match the progression in
-[the beginner notebook](notebooks/seaborn_beginner_guide.ipynb), while the
-advanced omics panels are developed in
-[the case-study notebook](notebooks/omics_case_studies.ipynb).
+Click any title or figure to open its tutorial, including the input contract,
+exact code, own-data example, interpretation, and scientific limits.
 
 ### Relationships, trends, and uncertainty
 
 | Tutorial example | Tutorial example |
 |---|---|
-| **Docking-score relationship**<br>[![Docking scatter plot](figures/01_docking_scatter.png)](figures/01_docking_scatter.png)<br>Scatter semantics, group encoding, trend estimation, and cautious association language. | **Cytokine time course**<br>[![Cytokine time-course plot](figures/02_cytokine_timecourse.png)](figures/02_cytokine_timecourse.png)<br>Repeated measurements, individual trajectories, summary curves, and explicit variability. |
-| **Enzyme-response regression**<br>[![Enzyme regression facets](figures/05_enzyme_lmplot.png)](figures/05_enzyme_lmplot.png)<br>Faceted regression for comparing conditions without hiding between-group structure. | **Trait association with marginals**<br>[![Joint distribution plot](figures/09_phylo_jointplot.png)](figures/09_phylo_jointplot.png)<br>A joint view of association and marginal distributions, without claiming phylogenetic correction. |
+| [**Docking-score relationship**](docs/figure-tutorials.md#01-docking-score-relationship)<br>[![Docking scatter plot](figures/01_docking_scatter.png)](docs/figure-tutorials.md#01-docking-score-relationship)<br>Scatter semantics, group encoding, trend estimation, and cautious association language. | [**Cytokine time course**](docs/figure-tutorials.md#02-cytokine-time-course)<br>[![Cytokine time-course plot](figures/02_cytokine_timecourse.png)](docs/figure-tutorials.md#02-cytokine-time-course)<br>Repeated measurements, individual trajectories, summary curves, and explicit variability. |
+| [**Enzyme-response regression**](docs/figure-tutorials.md#05-enzyme-response-regression)<br>[![Enzyme regression facets](figures/05_enzyme_lmplot.png)](docs/figure-tutorials.md#05-enzyme-response-regression)<br>Faceted regression for comparing conditions without hiding between-group structure. | [**Trait association with marginals**](docs/figure-tutorials.md#09-trait-association-with-marginals)<br>[![Joint distribution plot](figures/09_phylo_jointplot.png)](docs/figure-tutorials.md#09-trait-association-with-marginals)<br>A joint view of association and marginal distributions, without claiming phylogenetic correction. |
 
 ### Distributions and group comparisons
 
 | Tutorial example | Tutorial example |
 |---|---|
-| **Variant-frequency histogram**<br>[![Variant allele-frequency histogram](figures/03_variant_af_histogram.png)](figures/03_variant_af_histogram.png)<br>Binning choices and distribution shape for bounded biological measurements. | **Variant-frequency ECDF**<br>[![Variant allele-frequency ECDF](figures/03b_variant_af_ecdf.png)](figures/03b_variant_af_ecdf.png)<br>A bin-free companion view that makes thresholds and tail probabilities easy to read. |
-| **Expression box plot**<br>[![Gene-expression box plot](figures/04_expression_boxplot.png)](figures/04_expression_boxplot.png)<br>Robust group summaries with medians, quartiles, and outlier visibility. | **Expression violin and swarm**<br>[![Gene-expression violin and swarm plot](figures/04b_expression_violin_swarm.png)](figures/04b_expression_violin_swarm.png)<br>Distribution shape plus the observed samples, avoiding a summary-only story. |
+| [**Variant-frequency histogram**](docs/figure-tutorials.md#03-variant-frequency-histogram)<br>[![Variant allele-frequency histogram](figures/03_variant_af_histogram.png)](docs/figure-tutorials.md#03-variant-frequency-histogram)<br>Binning choices and distribution shape for bounded biological measurements. | [**Variant-frequency ECDF**](docs/figure-tutorials.md#03b-variant-frequency-ecdf)<br>[![Variant allele-frequency ECDF](figures/03b_variant_af_ecdf.png)](docs/figure-tutorials.md#03b-variant-frequency-ecdf)<br>A bin-free companion view that makes thresholds and tail probabilities easy to read. |
+| [**Expression box plot**](docs/figure-tutorials.md#04-expression-box-plot)<br>[![Gene-expression box plot](figures/04_expression_boxplot.png)](docs/figure-tutorials.md#04-expression-box-plot)<br>Robust group summaries with medians, quartiles, and outlier visibility. | [**Expression violin and swarm**](docs/figure-tutorials.md#04b-expression-violin-and-swarm)<br>[![Gene-expression violin and swarm plot](figures/04b_expression_violin_swarm.png)](docs/figure-tutorials.md#04b-expression-violin-and-swarm)<br>Distribution shape plus the observed samples, avoiding a summary-only story. |
 
 ### Multivariable structure and matrices
 
 | Tutorial example | Tutorial example |
 |---|---|
-| **Metabolite heatmap**<br>[![Metabolite heatmap](figures/06_metabolite_heatmap.png)](figures/06_metabolite_heatmap.png)<br>Matrix encoding, centered color scales, annotation, and readable feature comparison. | **Microbiome clustermap**<br>[![Microbiome clustermap](figures/07_microbiome_clustermap.png)](figures/07_microbiome_clustermap.png)<br>Exploratory hierarchical structure and the motivation for composition-aware preprocessing. |
-| **Sequencing-QC pairplot**<br>[![Sequencing quality-control pairplot](figures/08_qc_pairplot.png)](figures/08_qc_pairplot.png)<br>Pairwise distributions and correlations for fast multivariable quality control. | **Pathway count heatmap**<br>[![Pathway count heatmap](figures/10_pathway_heatmap.png)](figures/10_pathway_heatmap.png)<br>Annotated categorical counts, clearly separated from statistical enrichment claims. |
+| [**Metabolite heatmap**](docs/figure-tutorials.md#06-metabolite-correlation-heatmap)<br>[![Metabolite heatmap](figures/06_metabolite_heatmap.png)](docs/figure-tutorials.md#06-metabolite-correlation-heatmap)<br>Matrix encoding, centered color scales, annotation, and readable feature comparison. | [**Microbiome clustermap**](docs/figure-tutorials.md#07-microbiome-clustermap)<br>[![Microbiome clustermap](figures/07_microbiome_clustermap.png)](docs/figure-tutorials.md#07-microbiome-clustermap)<br>Exploratory hierarchical structure and the motivation for composition-aware preprocessing. |
+| [**Sequencing-QC pairplot**](docs/figure-tutorials.md#08-sequencing-qc-pairplot)<br>[![Sequencing quality-control pairplot](figures/08_qc_pairplot.png)](docs/figure-tutorials.md#08-sequencing-qc-pairplot)<br>Pairwise distributions and correlations for fast multivariable quality control. | [**Pathway count heatmap**](docs/figure-tutorials.md#10-pathway-count-heatmap)<br>[![Pathway count heatmap](figures/10_pathway_heatmap.png)](docs/figure-tutorials.md#10-pathway-count-heatmap)<br>Annotated categorical counts, clearly separated from statistical enrichment claims. |
 
 ### Advanced omics case studies
 
 | Tutorial example | Tutorial example |
 |---|---|
-| **Differential-expression dashboard**<br>[![Volcano and MA plots](figures/11_differential_expression_dashboard.png)](figures/11_differential_expression_dashboard.png)<br>Volcano and MA views with FDR and effect-size thresholds computed from the data. | **Pangenome population structure**<br>[![Pangenome frequency spectrum and PCA](figures/12_pangenome_structure.png)](figures/12_pangenome_structure.png)<br>Gene-frequency classes and PCA derived from a binary presence–absence matrix. |
-| **Pangenome Jaccard clustermap**<br>[![Pangenome Jaccard clustermap](figures/13_pangenome_clustermap.png)](figures/13_pangenome_clustermap.png)<br>Binary gene-content clustering with a distance metric appropriate for presence–absence data. | **CLR microbiome clustermap**<br>[![CLR microbiome clustermap](figures/14_microbiome_clr_clustermap.png)](figures/14_microbiome_clr_clustermap.png)<br>Zero replacement, centered-log-ratio transformation, and Euclidean distance in CLR space. |
+| [**Differential-expression dashboard**](docs/figure-tutorials.md#11-differential-expression-dashboard)<br>[![Volcano and MA plots](figures/11_differential_expression_dashboard.png)](docs/figure-tutorials.md#11-differential-expression-dashboard)<br>Volcano and MA views with FDR and effect-size thresholds computed from the data. | [**Pangenome population structure**](docs/figure-tutorials.md#12-pangenome-population-structure)<br>[![Pangenome frequency spectrum and PCA](figures/12_pangenome_structure.png)](docs/figure-tutorials.md#12-pangenome-population-structure)<br>Gene-frequency classes and PCA derived from a binary presence-absence matrix. |
+| [**Pangenome Jaccard clustermap**](docs/figure-tutorials.md#13-pangenome-jaccard-clustermap)<br>[![Pangenome Jaccard clustermap](figures/13_pangenome_clustermap.png)](docs/figure-tutorials.md#13-pangenome-jaccard-clustermap)<br>Binary gene-content clustering with a distance metric appropriate for presence-absence data. | [**CLR microbiome clustermap**](docs/figure-tutorials.md#14-clr-microbiome-clustermap)<br>[![CLR microbiome clustermap](figures/14_microbiome_clr_clustermap.png)](docs/figure-tutorials.md#14-clr-microbiome-clustermap)<br>Zero replacement, centered-log-ratio transformation, and Euclidean distance in CLR space. |
 
 ### Guided practice
 
 | Tutorial example | Tutorial example |
 |---|---|
-| **Annotated QC exercise**<br>[![Annotated sequencing QC practice figure](figures/practice_annotated_qc.png)](figures/practice_annotated_qc.png)<br>A worked practice output for annotation, thresholds, and communicating actionable QC findings. |  |
+| [**Annotated QC exercise**](docs/figure-tutorials.md#practice-annotated-qc)<br>[![Annotated sequencing QC practice figure](figures/practice_annotated_qc.png)](docs/figure-tutorials.md#practice-annotated-qc)<br>A worked practice output for annotation, thresholds, and communicating actionable QC findings. |  |
 
 ## Demonstrated capabilities
 
@@ -109,8 +97,8 @@ figure-level Seaborn objects.
 ## Quick start
 
 ```bash
-git clone https://github.com/mbilal-OU/biology-data-viz-seaborn.git
-cd biology-data-viz-seaborn
+git clone https://github.com/mbilal-OU/seaborn-biological-statistics.git
+cd seaborn-biological-statistics
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
@@ -200,13 +188,13 @@ docs/         documentation site source
 This repository focuses on static statistical graphics with Seaborn and its
 Matplotlib foundation. Custom phylogenomics layouts, genome tracks, synteny,
 animation, and low-level figure engineering are covered in the companion
-[biology-data-viz-matplotlib](https://github.com/mbilal-OU/biology-data-viz-matplotlib)
+[matplotlib-genomic-figures](https://github.com/mbilal-OU/matplotlib-genomic-figures)
 repository.
 
 ## Portfolio series
 
-- **Seaborn** · [Matplotlib](https://github.com/mbilal-OU/biology-data-viz-matplotlib) · [Plotly](https://github.com/mbilal-OU/Biology-data-viz-plotly)
-- [ggplot2](https://github.com/mbilal-OU/Biology-data-viz-ggplot2) · [ggtree + ComplexHeatmap](https://github.com/mbilal-OU/Biology-data-viz-ggtree-complexheatmap) · [Shiny](https://github.com/mbilal-OU/Biology-data-viz-shiny) · [Gnuplot](https://github.com/mbilal-OU/biology-data-viz-gnuplot)
+- **Seaborn** · [Matplotlib](https://github.com/mbilal-OU/matplotlib-genomic-figures) · [Plotly](https://github.com/mbilal-OU/plotly-interactive-omics)
+- [ggplot2](https://github.com/mbilal-OU/ggplot2-omics-grammar) · [ggtree + ComplexHeatmap](https://github.com/mbilal-OU/ggtree-complexheatmap-phylogenomics) · [Shiny](https://github.com/mbilal-OU/shiny-omics-explorer) · [Gnuplot](https://github.com/mbilal-OU/gnuplot-bioinformatics-cli)
 
 ## Citation and license
 

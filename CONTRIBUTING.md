@@ -6,8 +6,8 @@ explanations, or bug fixes.
 ## Setup
 
 ```bash
-git clone https://github.com/mbilal-OU/biology-data-viz-seaborn.git
-cd biology-data-viz-seaborn
+git clone https://github.com/mbilal-OU/seaborn-biological-statistics.git
+cd seaborn-biological-statistics
 pip install -r requirements.txt
 pip install -e .
 ```

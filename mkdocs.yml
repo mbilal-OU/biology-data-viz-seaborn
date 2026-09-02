@@ -1,11 +1,12 @@
-site_name: Biological Data Visualization with Seaborn
-site_description: Tested statistical and omics visualization patterns for biology and bioinformatics.
-repo_url: https://github.com/mbilal-OU/biology-data-viz-seaborn
-repo_name: mbilal-OU/biology-data-viz-seaborn
+site_name: Biological Statistics Visualization with Seaborn
+site_description: Tested statistical graphics for biological and omics data with Seaborn.
+repo_url: https://github.com/mbilal-OU/seaborn-biological-statistics
+repo_name: mbilal-OU/seaborn-biological-statistics
 
 nav:
   - Home: index.md
   - Advanced Gallery: gallery.md
+  - Figure Tutorials: figure-tutorials.md
   - Methods: methods.md
   - Setup: setup.md
 
@@ -15,4 +16,3 @@ theme:
 markdown_extensions:
   - tables
   - fenced_code
-
